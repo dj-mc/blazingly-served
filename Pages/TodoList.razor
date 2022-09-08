@@ -1,0 +1,33 @@
+﻿@page "/todolist"
+
+<h3>TodoList (@todoList.Count(t => !t.IsDone))</h3>
+
+@* dotnet new razorcomponent -n TodoList -o Pages *@
+
+<ul>
+	@foreach (var todoItem in todoList)
+	{
+		<li>
+			<input type="checkbox" @bind="todoItem.IsDone" />
+			<input @bind="@todoItem.Title" />
+		</li>
+	}
+</ul>
+
+<input placeholder="Something important" @bind="newTodoItemTitle" />
+<button @onclick="addTodoItem">Add todo item</button>
+
+@code {
+	private List<TodoItem> todoList = new();
+	private string? newTodoItemTitle;
+
+	private void addTodoItem()
+	{
+		if (!string.IsNullOrWhiteSpace(newTodoItemTitle))
+		{
+			todoList.Add(new TodoItem { Title = newTodoItemTitle });
+			newTodoItemTitle = string.Empty;
+		}
+
+	}
+}
